@@ -10,22 +10,16 @@ const App = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState("");
 
-    const searchMovies = async (title) => {
-        try {
-            const response = await fetch(`${API_URL}&s=${title}`);
-            const data = await response.json();
+    useEffect(() => {
+        // setError("Please enter a search term.");
+        // searchMovies("Spiderman");
+    }, [searchTerm]);
 
-            if (data.Response === "True") {
-                setError("");
-                setMovies(data.Search);
-            } else {
-                setError(data.Error);
-                setMovies([]);
-            }
-        } catch (error) {
-            setError("An error occurred while fetching data.");
-            setMovies([]);
-        }
+    const searchMovies = async (title) => {
+        const response = await fetch(`${API_URL}&s=${title}`);
+        const data = await response.json();
+
+        setMovies(data.Search);
     };
 
     const handleKeyDown = (e) => {
@@ -33,11 +27,6 @@ const App = () => {
             searchMovies(searchTerm);
         }
     };
-
-    useEffect(() => {
-        setError("Please enter a search term.");
-        searchMovies("Spiderman");
-    }, []);
 
     return (
         <div className='app'>
